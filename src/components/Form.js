@@ -1,8 +1,8 @@
 import React from "react"
 import { Form, Input, Button } from "antd";
 
-import axios from 'axios'
-
+import axios from 'axios';
+import {connect} from 'react-redux';
 
 class CustomForm extends React.Component {
 
@@ -12,10 +12,14 @@ class CustomForm extends React.Component {
 
         const title = event.target.elements.title.value;
         const content = event.target.elements.content.value;
+        axios.defaults.headers ={
+          "Content-Type": "application/json",
+          Authorization: this.props.token
+        }
 
         switch (requestType) {
             case 'post':
-                axios.post('http://127.0.0.1:8000/api/', {
+                axios.post('https://django-react-crud.herokuapp.com/api/', {
                     title: title,
                     content: content
                 })
@@ -24,13 +28,17 @@ class CustomForm extends React.Component {
                 break;
             
             case 'put':
-                axios.put(`http://127.0.0.1:8000/api/${articleID}/`,          {
+                axios.put(`https://django-react-crud.herokuapp.com/api/${articleID}/`,          {
                     title: title,
                     content: content
                 })
-                .then(res => console.log(res))
+                .then(res => 
+                  this.setState({
+                    title: title,
+                    content: content
+                  })
+                  )
                 .catch(err => console.error(err));
-
                 break;
         
             default:
@@ -62,4 +70,12 @@ class CustomForm extends React.Component {
   }
 }
 
-export default CustomForm
+const mapStateToProps = state => {
+  return {
+    token: state.token
+  }
+}
+
+
+
+export default connect(mapStateToProps)(CustomForm)

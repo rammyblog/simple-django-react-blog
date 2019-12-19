@@ -25,7 +25,7 @@ SECRET_KEY = 'eq5l)$c^ayp!k6fn)b$4aumvgw3@mjka8g0vd-p^*^b$@v%oev'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-react-crud.herokuapp.com']
+ALLOWED_HOSTS = ['django-react-crud.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -139,11 +139,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-           'rest_framework.permissions.AllowAny',
-        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+           'rest_framework.authentication.TokenAuthentication',
     ]
 }
 
